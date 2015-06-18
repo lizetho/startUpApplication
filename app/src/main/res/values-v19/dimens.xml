@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="app_bar_padding_top">24dp</dimen>
+    <dimen name="padding_top_drawer_title_text">20dp</dimen>
+</resources>

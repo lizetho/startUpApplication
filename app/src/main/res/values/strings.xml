@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">StartUpApplication</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!--Toolbar-->
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <!--Navigation drawer strings-->
+
+    <!-- Dialog -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_ok">Ok</string>
+    <string name="network_error">Please check your network connection.</string>
+
+
+    <!--Functionality-->
+    <string name="home_page">Home</string>
+
+</resources>
