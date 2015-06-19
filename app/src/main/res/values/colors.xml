@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- toolbar-->
+    <color name="toolbar_primary_text">@color/primary_text_default_material_dark</color>
+    <color name="toolbar_secondary_text">@color/secondary_text_default_material_dark</color>
+
     <!-- navigation menu colors-->
     <color name="navigation_menu_background">#eeeeee</color>
     <color name="navigation_menu_selected_item_background">#fefefe</color>

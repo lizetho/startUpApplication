@@ -6,6 +6,7 @@
     <!--Toolbar-->
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="transition_toolbar">transitionToolBar</string>
 
     <!--Navigation drawer strings-->
 

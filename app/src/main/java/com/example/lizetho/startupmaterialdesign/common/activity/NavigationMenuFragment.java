@@ -50,7 +50,7 @@ public class NavigationMenuFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment NavegationDrawerFragment.
      */
-    public static NavigationMenuFragment newInstance(String param1) {
+    public static NavigationMenuFragment newInstance() {
         NavigationMenuFragment fragment = new NavigationMenuFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -92,7 +92,6 @@ public class NavigationMenuFragment extends Fragment {
                 super.onDrawerOpened(drawer);
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
-                    saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, "" + mUserLearnedDrawer);
                 }
                 getActivity().invalidateOptionsMenu();
             }
@@ -113,6 +112,7 @@ public class NavigationMenuFragment extends Fragment {
         };
         //The app will show the drawer just for the very first time the app is launched
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
+            saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, "" + true);
             drawerLayout.openDrawer(containerView);
         }
 

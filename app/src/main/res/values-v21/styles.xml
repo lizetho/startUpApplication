@@ -3,9 +3,5 @@
 
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:colorAccent">@color/accent</item>
-
     </style>
 </resources>
