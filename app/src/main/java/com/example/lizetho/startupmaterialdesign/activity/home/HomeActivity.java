@@ -1,4 +1,4 @@
-package com.example.lizetho.startupmaterialdesign.model;
+package com.example.lizetho.startupmaterialdesign.activity.home;
 
 import android.os.Bundle;
 
@@ -10,12 +10,11 @@ public class HomeActivity extends AbstractActivity {
 
     @Override
     protected int getContentViewResourceId() {
-        return R.layout.fragment_main_activity;
+        return R.layout.activity_home;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.home_page);
     }
 }

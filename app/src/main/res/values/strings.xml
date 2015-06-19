@@ -18,4 +18,10 @@
     <!--Functionality-->
     <string name="home_page">Home</string>
 
+    <!--Functionality 2-->
+    <string name="favorites_page">Favorites</string>
+    <string name="title_activity_favorites">FavoritesActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+
 </resources>

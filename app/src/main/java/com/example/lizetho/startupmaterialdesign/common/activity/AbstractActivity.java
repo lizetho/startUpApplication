@@ -1,20 +1,20 @@
 package com.example.lizetho.startupmaterialdesign.common.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.example.lizetho.startupmaterialdesign.R;
+import com.example.lizetho.startupmaterialdesign.activity.favorite.FavoritesActivity;
+import com.example.lizetho.startupmaterialdesign.activity.home.HomeActivity;
 
 
 /**
@@ -23,39 +23,39 @@ import com.example.lizetho.startupmaterialdesign.R;
  */
 public abstract class AbstractActivity extends AppCompatActivity {
 
+    public static final String SELECTED_NAVIGATION_MENU_ITEM = "selectedNavigationMenuItem";
     private final String TAG = "AbstractActivity";
 
     //Tool bar
     private Toolbar toolbar;
 
     //Navigation Drawer
-    private NavigationDrawerFragment navigationMenuFragment;
-
-    //Flag to know if the menu is opened or not.
-    private boolean isDrawerOpened = false;
-
-    //Flag to know if header menu button is enable
-    private boolean isMenuEnable = true;
-
-
-    //===================== ABSTRACT METHODS ======================
-
-    /**
-     * The activity layout to show below the toolbar
-     *
-     * @return the resource layout. For example R.layout.activity_main;
-     */
-    protected abstract int getContentViewResourceId();
+    private NavigationMenuFragment navigationMenuFragment;
 
     //===================== OVERRIDE METHODS ======================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_container);
+        setContentView(R.layout.activity_common_layout);
 
+        //Only portrait orientation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        initContainView();
+
+        initHeader();
+
+        initNavigationMenu();
+
+    }
+
+    /**
+     * Initialize the containing of the activity by replacing the container layout for the activity layout xml
+     */
+    private void initContainView() {
         // Get a reference to the score_name_entry object in score.xml
-        RelativeLayout containingLayout = (RelativeLayout) findViewById(R.id.fragment_container);
+        RelativeLayout containingLayout = (RelativeLayout) findViewById(R.id.activity_layout_container);
         ViewGroup.LayoutParams layoutParams = containingLayout.getLayoutParams();
         containingLayout.removeAllViews();
 
@@ -66,35 +66,33 @@ public abstract class AbstractActivity extends AppCompatActivity {
             containingLayout.addView(inflater.inflate(getResources().getLayout(getContentViewResourceId()), null), layoutParams);
         } else {
             Log.e(TAG, "Activity cannot be created because no resource view was found. Please check you have implemented method getContentViewResourceId().");
-            return;
+            finish();
         }
-
-        //Only portrait orientation
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        //initialisation of the menu.
-        if (hasMenu()) {
-            Log.d(TAG, "onCreate: initialization of menu");
-            initMenu();
-        } else {
-            Log.d(TAG, "onCreate: no menu");
-        }
-
-        /*//Define the item menu selected.
-        if (navigationMenuAdapter != null) {
-            navigationMenuAdapter.selectMenuItem(getSelectedMenuItem());
-        }*/
-
-        //Initialization header
-        initHeader();
 
     }
 
-    public void onMenuItemClicked(NavigationDrawerFragment.NavigationItemEnum itemSelected) {
+    /**
+     * Checks the selected item and starts the new activity if it is not the same than the current selected activity
+     *
+     * @param itemSelected new selected item
+     */
+    public void onNavigationMenuItemClicked(NavigationMenuItemEnum itemSelected) {
         if (itemSelected != null) {
             closeMenu();
-            if (itemSelected == NavigationDrawerFragment.NavigationItemEnum.HOME) {
-                //TODO startActivity(new Intent(this, HomepageActivity.class));
+            Intent intent = null;
+            switch (itemSelected) {
+                case HOME:
+                    intent = new Intent(this, HomeActivity.class);
+                    break;
+                case FAVORITES:
+                    intent = new Intent(this, FavoritesActivity.class);
+                    break;
+            }
+            if (intent != null && navigationMenuFragment.getSelectedItem() != itemSelected) {
+                intent.putExtra(SELECTED_NAVIGATION_MENU_ITEM, itemSelected.name());
+                startActivity(intent);
+            } else {
+                Log.e(TAG, "The selected item is the current selected item or it has not a related Activity");
             }
         }
     }
@@ -102,48 +100,25 @@ public abstract class AbstractActivity extends AppCompatActivity {
     //=========== CONFIGURE HEADER =================
 
     /**
-     * Initialization header.
+     * Initialization header. Put the title
      */
     private void initHeader() {
         //Set a toolbar to replace the action bar.
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (navigationMenuFragment != null) {
-                    if (navigationMenuFragment.getDrawerLayout().getDrawerLockMode(GravityCompat.START) == DrawerLayout.LOCK_MODE_UNLOCKED) {
-                        if (isMenuEnable) {
-                            if (isDrawerOpened) {
-                                closeMenu();
-                            } else {
-                                openMenu();
-                            }
-                        } else {
-                            Log.d(TAG, "onOptionsItemSelected: click on back");
-                            //onHeaderBackButton();
-                        }
-                    }
-                } else {
-                    Log.d(TAG, "onOptionsItemSelected: click on back");
-                    //onHeaderBackButton();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        String itemName = getIntent().getStringExtra(SELECTED_NAVIGATION_MENU_ITEM);
+        if (itemName != null) {
+            setTitle(NavigationMenuItemEnum.valueOf(itemName).nameResource);
         }
     }
 
     /**
      * Open Navigation drawer
      */
-    public void openMenu() {
+    private void openMenu() {
         Log.d(TAG, "openMenu");
         if (navigationMenuFragment != null) {
             navigationMenuFragment.openDrawer(GravityCompat.START);
@@ -153,53 +128,10 @@ public abstract class AbstractActivity extends AppCompatActivity {
     /**
      * Close navigation drawer
      */
-    public void closeMenu() {
+    private void closeMenu() {
         Log.d(TAG, "closeMenu");
         if (navigationMenuFragment != null) {
             navigationMenuFragment.closeDrawer(GravityCompat.START);
-        }
-    }
-
-    /**
-     * Enable or disable the header back button
-     * <p/>
-     * public void headerEnableBack(boolean enable) {
-     * if (getSupportActionBar() != null) {
-     * getSupportActionBar().setHomeAsUpIndicator(R.drawable.ico_backbtn);
-     * getSupportActionBar().setDisplayHomeAsUpEnabled(enable);
-     * }
-     * }
-     * <p/>
-     * /**
-     * Enable or disable the header menu button
-     *
-     * @param enable
-     */
-    public void headerEnableMenu(boolean enable) {
-        if (enable && navigationMenuFragment != null && toolbar != null) {
-            isMenuEnable = enable;
-            ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                    this,
-                    navigationMenuFragment.getDrawerLayout(),
-                    toolbar,
-                    R.string.open,
-                    R.string.close) {
-                public void onDrawerClosed(View view) {
-                    super.onDrawerClosed(view);
-                    isDrawerOpened = false;
-                    invalidateOptionsMenu();
-                    syncState();
-                }
-
-                public void onDrawerOpened(View drawerView) {
-                    super.onDrawerOpened(drawerView);
-                    isDrawerOpened = true;
-                    invalidateOptionsMenu();
-                    syncState();
-                }
-            };
-            navigationMenuFragment.getDrawerLayout().setDrawerListener(actionBarDrawerToggle);
-            actionBarDrawerToggle.syncState();
         }
     }
 
@@ -214,24 +146,30 @@ public abstract class AbstractActivity extends AppCompatActivity {
         }
     }
 
-    //===================== PROTECTED METHODS ======================
-
-    /**
-     * Returned if the screen has a menu or not.
-     *
-     * @return true if there is a menu.
-     */
-    protected boolean hasMenu() {
-        return findViewById(R.id.drawer_layout) != null;
-    }
-
     //===================== PUBLIC METHODS ======================
 
     /**
-     * Inits the menu.
+     * Initialize the navigation menu. Put the selected item.
      */
-    public void initMenu() {
-        navigationMenuFragment = NavigationDrawerFragment.newInstance(null);
+    private void initNavigationMenu() {
+        navigationMenuFragment = (NavigationMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        if (navigationMenuFragment != null) {
+            navigationMenuFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
+            String itemName = getIntent().getStringExtra(SELECTED_NAVIGATION_MENU_ITEM);
+            if (itemName != null) {
+                navigationMenuFragment.setSelectedItem(NavigationMenuItemEnum.valueOf(itemName));
+            } else {
+                navigationMenuFragment.setSelectedItem(NavigationMenuItemEnum.HOME);
+            }
+        }
     }
+    //===================== ABSTRACT METHODS ======================
+
+    /**
+     * The activity layout to show below the toolbar
+     *
+     * @return the resource layout. For example R.layout.activity_main;
+     */
+    protected abstract int getContentViewResourceId();
 
 }

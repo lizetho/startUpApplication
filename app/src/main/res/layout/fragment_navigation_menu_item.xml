@@ -2,25 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/navigation_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nd_item_height"
-    android:paddingRight="@dimen/nd_horizontal_padding">
+    android:layout_height="@dimen/navigation_menu_item_height"
+    android:background="@color/navigation_menu_item_background">
 
     <ImageView
         android:id="@+id/navigation_item_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/nd_horizontal_padding"
-        android:scaleType="centerInside"
-        android:src="@android:drawable/ic_btn_speak_now" />
+        android:paddingLeft="@dimen/navigation_menu_item_horizontal_padding" />
 
     <TextView
         android:id="@+id/navigation_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/nd_text_left_padding"
-        android:text="@string/abc_action_bar_home_description"
-        android:textColor="@color/primary_text" />
+        android:paddingLeft="@dimen/navigation_menu_item_text_left_padding"
+        android:paddingRight="@dimen/navigation_menu_item_horizontal_padding"
+        android:textColor="@color/navigation_menu_item_text" />
 
 </RelativeLayout>

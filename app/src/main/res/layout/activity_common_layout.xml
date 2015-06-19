@@ -20,18 +20,18 @@
         android:layout_below="@id/app_bar">
 
         <RelativeLayout
-            android:id="@+id/fragment_container"
+            android:id="@+id/activity_layout_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></RelativeLayout>
 
         <fragment
             android:id="@+id/fragment_navigation_drawer"
-            android:name="com.example.lizetho.startupmaterialdesign.common.activity.NavigationDrawerFragment"
+            android:name="com.example.lizetho.startupmaterialdesign.common.activity.NavigationMenuFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:layout="@layout/fragment_navigation_drawer"
-            tools:layout="@layout/fragment_navigation_drawer">
+            app:layout="@layout/fragment_navigation_menu"
+            tools:layout="@layout/fragment_navigation_menu">
 
         </fragment>
     </android.support.v4.widget.DrawerLayout>
