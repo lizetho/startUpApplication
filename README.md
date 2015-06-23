@@ -16,7 +16,7 @@ The difference is visible in the status bar. V21 extends from the material theme
 
 Customize these files as you want.
 
-<h2>Colors<h2>
+<h2>Colors</h2>
 
 Material design's color palette comprises primary and accent colors working harmoniously with each other. This application has a color palette genereted from <a href="materialpalette.com/">materialpalette.com/</a> 
 
