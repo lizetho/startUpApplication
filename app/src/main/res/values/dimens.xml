@@ -24,6 +24,7 @@
     <dimen name="navigation_menu_margin_right">56dp</dimen>
     <dimen name="navigation_menu_item_horizontal_padding">16dp</dimen>
     <dimen name="navigation_menu_item_text_left_padding">72dp</dimen>
+    <dimen name="navigation_menu_header_height">150dp</dimen>
 
 
 </resources>

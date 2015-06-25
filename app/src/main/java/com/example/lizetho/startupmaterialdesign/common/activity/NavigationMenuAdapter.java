@@ -28,7 +28,7 @@ public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAd
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = layoutInflater.inflate(R.layout.fragment_navigation_menu_item, viewGroup, false);
+        View view = layoutInflater.inflate(R.layout.navigation_menu_item, viewGroup, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
@@ -55,7 +55,7 @@ public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAd
         return selectedNavigationMenuItemEnum;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView title;
 
@@ -63,13 +63,8 @@ public class NavigationMenuAdapter extends RecyclerView.Adapter<NavigationMenuAd
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.navigation_item_image);
             title = (TextView) itemView.findViewById(R.id.navigation_item_title);
-            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            ((AbstractActivity) context).onNavigationMenuItemClicked(navigationMenuItemEnums[getPosition()]);
-        }
     }
 
 
